@@ -1,0 +1,307 @@
+[
+    {
+        "id": "4d79fc2e2d5db7d4",
+        "type": "tab",
+        "label": "Ejercicio 01",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "c366abf89141f128",
+        "type": "mqtt in",
+        "z": "4d79fc2e2d5db7d4",
+        "name": "iot/temperatura",
+        "topic": "iot/temperatura",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "a6fa77d1c8551a0d",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 200,
+        "y": 440,
+        "wires": [
+            [
+                "7ae3f42476d6e2e1",
+                "027d1956e9d27ad5",
+                "d125d2ed45bdfd43"
+            ]
+        ]
+    },
+    {
+        "id": "7ae3f42476d6e2e1",
+        "type": "function",
+        "z": "4d79fc2e2d5db7d4",
+        "name": "mensaje",
+        "func": "//node.warn(isNaN(msg.payload)); //Devuelve el tipo de dato de ese valor\n\nif(msg.topic === \"iot/temperatura\" && !isNaN(msg.payload)){\n    msg.topic = \"INSERT INTO tbl_temperaruta(temperatura, descripcion) \" + \"VALUES(\" + msg.payload + \", 'Insercción desde MQQT')\";\n    return msg;\n}else{\n    msg.topic = \"\";\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 440,
+        "wires": [
+            [
+                "d0e3aa378be2c5b1"
+            ]
+        ]
+    },
+    {
+        "id": "d0e3aa378be2c5b1",
+        "type": "mysql",
+        "z": "4d79fc2e2d5db7d4",
+        "mydb": "05216948c3050a86",
+        "name": "Base de datos",
+        "x": 660,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "027d1956e9d27ad5",
+        "type": "ui_gauge",
+        "z": "4d79fc2e2d5db7d4",
+        "name": "Temperatura",
+        "group": "4b3fa1178f6582ea",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "gtype": "gage",
+        "title": "Cálculo de temperatura",
+        "label": "C",
+        "format": "{{value}} °C",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#0000ff",
+            "#07b042",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 430,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "d125d2ed45bdfd43",
+        "type": "ui_chart",
+        "z": "4d79fc2e2d5db7d4",
+        "name": "Histórico",
+        "group": "83c56076cdff6585",
+        "order": 0,
+        "width": "0",
+        "height": "0",
+        "label": "Histórico",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm",
+        "interpolate": "step",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#031d3f",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 420,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c83cefc2c604d665",
+        "type": "comment",
+        "z": "4d79fc2e2d5db7d4",
+        "name": "MQTT SUB",
+        "info": "# Topico\n``` shell\niot/temperatura\n```",
+        "x": 190,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "41ecbef7af1caf39",
+        "type": "mqtt in",
+        "z": "4d79fc2e2d5db7d4",
+        "name": "iot/humedad",
+        "topic": "iot/humedad",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "a6fa77d1c8551a0d",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 190,
+        "y": 560,
+        "wires": [
+            [
+                "0a431e91a9cd21b8",
+                "d125d2ed45bdfd43"
+            ]
+        ]
+    },
+    {
+        "id": "0a431e91a9cd21b8",
+        "type": "ui_gauge",
+        "z": "4d79fc2e2d5db7d4",
+        "name": "Humedad",
+        "group": "4b3fa1178f6582ea",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "donut",
+        "title": "Humedad",
+        "label": "",
+        "format": "{{value}} %",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#f1b204",
+            "#209400",
+            "#210099"
+        ],
+        "seg1": "30",
+        "seg2": "60",
+        "diff": false,
+        "className": "",
+        "x": 420,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "2b3515e122877f1d",
+        "type": "comment",
+        "z": "4d79fc2e2d5db7d4",
+        "name": "GDS0051",
+        "info": "# Nombre alumno: Lucía Cristel Ramírez Romero\n\n# Num. Control: 1222100464",
+        "x": 440,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "18492b58a13523f8",
+        "type": "ui_spacer",
+        "z": "4d79fc2e2d5db7d4",
+        "name": "spacer",
+        "group": "5c42c01114751e05",
+        "order": 1,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "a6fa77d1c8551a0d",
+        "type": "mqtt-broker",
+        "name": "Server",
+        "broker": "127.0.0.1",
+        "port": "1883",
+        "clientid": "edm",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "30",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "2",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "05216948c3050a86",
+        "type": "MySQLdatabase",
+        "name": "ServerDB",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "iot_db",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "4b3fa1178f6582ea",
+        "type": "ui_group",
+        "name": "Información",
+        "tab": "b46f13e48c6456c7",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "83c56076cdff6585",
+        "type": "ui_group",
+        "name": "Histórico de Datos",
+        "tab": "b46f13e48c6456c7",
+        "order": 5,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "5c42c01114751e05",
+        "type": "ui_group",
+        "name": "Group 1",
+        "tab": "0dfdaae127b42e25",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "b46f13e48c6456c7",
+        "type": "ui_tab",
+        "name": "IoT",
+        "icon": "payment",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "0dfdaae127b42e25",
+        "type": "ui_tab",
+        "name": "Tab 2",
+        "icon": "dashboard",
+        "order": 2
+    }
+]
